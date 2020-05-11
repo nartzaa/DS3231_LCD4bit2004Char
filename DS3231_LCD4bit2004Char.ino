@@ -1,4 +1,9 @@
 // Date, Time and Alarm functions using a DS3231 RTC connected via I2C and Wire lib
+/*DS3231
+    SDA > A4
+    SCL > A5
+*/
+
 
 #include <Wire.h>
 #include <SPI.h>  // not used here, but needed to prevent a RTClib compile error
@@ -38,7 +43,7 @@ void setup() {
     RTC.adjust(DateTime(__DATE__, __TIME__));
   }
   DateTime now = RTC.now();
-  RTC.setAlarm1Simple(21, 58);
+  //RTC.setAlarm1Simple(21, 58);
   RTC.turnOnAlarm(0);
   if (RTC.checkAlarmEnabled(1)) {
     Serial.println("Alarm Enabled");
@@ -48,9 +53,9 @@ void setup() {
 void loop () {
   lcd.setCursor(0, 0);
   lcd.print("Temp:");
-  lcd.createChar(0, customChar);
+  /*lcd.createChar(0, customChar);
   lcd.setCursor(12, 0);
-  lcd.write(byte(0));
+  lcd.write(byte(0));*/
   lcd.setCursor(0, 1);
   lcd.print("Date:");
   lcd.setCursor(11, 1);
@@ -112,29 +117,9 @@ void loop () {
 
   if (RTC.checkIfAlarm(1)) {
     Serial.println("Alarm Triggered");
-  }
-  /*lcd.setCursor(4, 3);
-  lcd.print("Nart ");
-  lcd.createChar(0, customChar);
-  //lcd.setCursor(9, 3);
-  //lcd.write(byte(0));
-  //lcd.setCursor(11, 3);
-  lcd.print("Namtal");
-  lcd.noCursor();*/
-
+  } 
   lcd.setCursor(scrollCursor, 3);
   lcd.print(line1.substring(stringStart,stringStop));
-
-  Serial.print(line1.length());
-  Serial.print(", ");
-  Serial.print(line1.substring(0, line1.length()));
-  Serial.print(", ");
-  Serial.print(scrollCursor);
-  Serial.print(", ");
-  Serial.print(stringStart);
-  Serial.print(", ");
-  Serial.println(stringStop);
-
   if(stringStart == 0 && scrollCursor > 0){
     scrollCursor--;
     if(stringStop < line1.length()) {
